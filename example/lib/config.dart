@@ -3,7 +3,6 @@ import 'dart:async';
 
 import 'package:flutter_flurry_sdk/flurry.dart';
 
-
 class ConfigPage extends StatefulWidget {
   ConfigPage({Key key, this.title}) : super(key: key);
 
@@ -16,7 +15,6 @@ class ConfigPage extends StatefulWidget {
 }
 
 class _ConfigPageState extends State<ConfigPage> with ConfigListener {
-
   Color _color;
   bool _listenerRegistered = false;
 
@@ -27,10 +25,8 @@ class _ConfigPageState extends State<ConfigPage> with ConfigListener {
   }
 
   @override
-  void initState(){
-    getActivcatedColor().then((data) => setState((){
-      _color = data;
-    }));
+  void initState() {
+    getActivatedColor().then((data) => setState(() => _color = data));
     super.initState();
   }
 
@@ -58,14 +54,14 @@ class _ConfigPageState extends State<ConfigPage> with ConfigListener {
                   textAlign: TextAlign.left,
                 ),
                 onPressed: () {
-                  if(!_listenerRegistered){
+                  if (!_listenerRegistered) {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: const Duration(seconds: 1),
                       content: Text("Listener was successfully registered"),
                     ));
                     _listenerRegistered = !_listenerRegistered;
                     Flurry.config.registerListener(this);
-                  }else{
+                  } else {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       duration: const Duration(seconds: 1),
                       content: Text("Listener has already been registered"),
@@ -108,7 +104,6 @@ class _ConfigPageState extends State<ConfigPage> with ConfigListener {
               ),
             ],
           ),
-
         ),
       ),
     );
@@ -121,9 +116,7 @@ class _ConfigPageState extends State<ConfigPage> with ConfigListener {
       duration: const Duration(seconds: 1),
       content: Text("Fetch activated"),
     ));
-    getActivcatedColor().then((data) => setState((){
-      _color = data;
-    }));
+    getActivatedColor().then((data) => setState(() => _color = data));
   }
 
   @override
@@ -143,13 +136,11 @@ class _ConfigPageState extends State<ConfigPage> with ConfigListener {
       duration: const Duration(seconds: 1),
       content: Text("Fetch completed with no change"),
     ));
-    getActivcatedColor().then((data) => setState((){
-      _color = data;
-    }));
+    getActivatedColor().then((data) => setState(() => _color = data));
   }
 
   @override
-  void onFetchError(bool isRetrying){
+  void onFetchError(bool isRetrying) {
     // TODO: implement fetchFail
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       duration: const Duration(seconds: 1),
@@ -157,10 +148,9 @@ class _ConfigPageState extends State<ConfigPage> with ConfigListener {
     ));
   }
 
-  Future<Color> getActivcatedColor() async{
+  Future<Color> getActivatedColor() async {
     String value = await Flurry.config.getConfigString('bgColor', '#ffffff');
-    Color color = _getColorFromHex(value);
-    return color;
+    return _getColorFromHex(value);
   }
 
   Color _getColorFromHex(String hexColor) {
@@ -171,5 +161,6 @@ class _ConfigPageState extends State<ConfigPage> with ConfigListener {
     if (hexColor.length == 8) {
       return Color(int.parse("0x$hexColor"));
     }
+    return null;
   }
 }

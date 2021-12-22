@@ -111,7 +111,7 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
                             duration: const Duration(seconds: 1),
                             content: Text("Event logged"),
                           ));
-                          p_logEvent(myController1.text, myController2.text);
+                          pLogEvent(myController1.text, myController2.text);
 
                           myController1.clear();
                           myController2.clear();
@@ -243,10 +243,10 @@ class _AnalyticsPageState extends State<AnalyticsPage> {
     if(s == null) {
       return false;
     }
-    return double.parse(s, (e) => null) != null;
+    return double.tryParse(s) != null;
   }
 
-  void p_logEvent(String name, String count){
+  void pLogEvent(String name, String count){
     int c = 0;
     if(count != null && count.length > 0){
       double d = double.parse(count);

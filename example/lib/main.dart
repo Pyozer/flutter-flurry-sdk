@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:flutter_flurry_sdk/flurry.dart';
@@ -9,17 +8,20 @@ import 'user_properties.dart';
 import 'config.dart';
 import 'public_apis.dart';
 
-
 void main() => runApp(new MyApp());
 
-class MyApp extends StatelessWidget{
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var routes = <String, WidgetBuilder>{
-      UserPropertiesPage.routeName: (BuildContext context) => new UserPropertiesPage(title: "User Properties"),
-      PublicAPIPage.routeName: (BuildContext context) => new PublicAPIPage(title: "Public APIs"),
-      AnalyticsPage.routeName: (BuildContext context) => new AnalyticsPage(title: "Analytics"),
-      ConfigPage.routeName: (BuildContext context) => new ConfigPage(title: "Config"),
+      UserPropertiesPage.routeName: (BuildContext context) =>
+          new UserPropertiesPage(title: "User Properties"),
+      PublicAPIPage.routeName: (BuildContext context) =>
+          new PublicAPIPage(title: "Public APIs"),
+      AnalyticsPage.routeName: (BuildContext context) =>
+          new AnalyticsPage(title: "Analytics"),
+      ConfigPage.routeName: (BuildContext context) =>
+          new ConfigPage(title: "Config"),
     };
     return new MaterialApp(
       title: 'Flutter Test',
@@ -41,7 +43,8 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => new _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with MessagingListener, PublisherSegmentationListener {
+class _MyHomePageState extends State<MyHomePage>
+    with MessagingListener, PublisherSegmentationListener {
   String _platformVersion = 'Unknown';
 
   @override
@@ -50,11 +53,12 @@ class _MyHomePageState extends State<MyHomePage> with MessagingListener, Publish
     initPlatformState();
   }
 
-  Future<void> initPlatformState() {
+  void initPlatformState() {
     String platformVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
     try {
-      Flurry.builder.withLogEnabled(true)
+      Flurry.builder
+          .withLogEnabled(true)
           .withLogLevel(LogLevel.verbose)
           .withCrashReporting(true)
           .withAppVersion("1.0.0")
@@ -62,8 +66,10 @@ class _MyHomePageState extends State<MyHomePage> with MessagingListener, Publish
           .withMessaging(true, this)
           .withSslPinningEnabled(true)
           .withPerformanceMetrics(Performance.all)
-          .build(androidAPIKey: 'C9R699NJWSMJVPQWJ273',
-                 iosAPIKey: 'RPBHT5CJFFJ9WCS3C5R6');
+          .build(
+            androidAPIKey: 'C9R699NJWSMJVPQWJ273',
+            iosAPIKey: 'RPBHT5CJFFJ9WCS3C5R6',
+          );
 
       Flurry.setContinueSessionMillis(10000);
       Flurry.setCrashReporting(true);
@@ -86,17 +92,14 @@ class _MyHomePageState extends State<MyHomePage> with MessagingListener, Publish
 
       Flurry.publisherSegmentation.registerListener(this);
       Flurry.publisherSegmentation.fetch();
-
-    } on PlatformException {
-    }
+    } on PlatformException {}
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) {
-      return null;
+      return;
     }
-
     setState(() {
       _platformVersion = platformVersion;
     });
@@ -125,9 +128,7 @@ class _MyHomePageState extends State<MyHomePage> with MessagingListener, Publish
                     style: TextStyle(fontSize: 16),
                     textAlign: TextAlign.left,
                   ),
-                  onPressed: () => {
-                    _onAnalyticsButtonPressed()
-                  },
+                  onPressed: _onAnalyticsButtonPressed,
                   splashColor: Colors.blueAccent,
                 ),
               ),
@@ -143,9 +144,7 @@ class _MyHomePageState extends State<MyHomePage> with MessagingListener, Publish
                     style: TextStyle(fontSize: 16),
                     textAlign: TextAlign.left,
                   ),
-                  onPressed: () => {
-                    _onConfigButtonPressed()
-                  },
+                  onPressed: _onConfigButtonPressed,
                   splashColor: Colors.blueAccent,
                 ),
               ),
@@ -161,9 +160,7 @@ class _MyHomePageState extends State<MyHomePage> with MessagingListener, Publish
                     style: TextStyle(fontSize: 16),
                     textAlign: TextAlign.left,
                   ),
-                  onPressed: () => {
-                    _onUserPropertiesButtonPressed()
-                  },
+                  onPressed: _onUserPropertiesButtonPressed,
                   splashColor: Colors.blueAccent,
                 ),
               ),
@@ -179,9 +176,7 @@ class _MyHomePageState extends State<MyHomePage> with MessagingListener, Publish
                     style: TextStyle(fontSize: 16),
                     textAlign: TextAlign.left,
                   ),
-                  onPressed: () => {
-                    _onPublicButtonPressed()
-                  },
+                  onPressed: _onPublicButtonPressed,
                   splashColor: Colors.blueAccent,
                 ),
               ),
@@ -209,14 +204,14 @@ class _MyHomePageState extends State<MyHomePage> with MessagingListener, Publish
   }
 
   @override
-  bool onNotificationClicked(Message message){
+  bool onNotificationClicked(Message message) {
     // TODO: implement didReceiveAction
     print("push action callback!");
     return false;
   }
 
   @override
-  bool onNotificationReceived(Message message){
+  bool onNotificationReceived(Message message) {
     // TODO: implement didReceiveMessage
     print("push receive callback!");
     return false;
@@ -228,12 +223,12 @@ class _MyHomePageState extends State<MyHomePage> with MessagingListener, Publish
   }
 
   @override
-  void onTokenRefresh(String token){
+  void onTokenRefresh(String token) {
     // TODO: implement onTokenRefresh
   }
 
   @override
-  void onFetched(Map<String, String> data){
+  void onFetched(Map<String, String> data) {
     print("PS onFetched");
   }
 }
